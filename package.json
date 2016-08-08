@@ -1,0 +1,16 @@
+{
+  "name": "app-sqs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.4.13",
+    "bluebird": "^3.4.1"
+  }
+}
