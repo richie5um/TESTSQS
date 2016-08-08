@@ -69,20 +69,22 @@ function processMessage(message) {
 
 function listener() {
     receiveMessage().then(function (data) {
-        return Promise.each(data.Messages, function (message) {
-            var origMessage = message;
-            return processMessage(message)
-                .then(function (body) {
-                    console.log({ old: origMessage.Body, new: JSON.stringify(body) });
-                    return body;
+        return Promise
+            .all(data.Messages.map(function (message) {
+                var origMessage = message;
+                return processMessage(message)
+                    .then(function (body) {
+                        console.log({ old: origMessage.Body, new: JSON.stringify(body) });
+                        return body;
+                    })
+                    .then(function (body) {
+                        return sendMessage(body)
+                    })
+                    .finally(function () {
+                        return deleteMessage(origMessage);
+                    });
                 })
-                .then(function (body) {
-                    return sendMessage(body)
-                })
-                .finally(function () {
-                    return deleteMessage(origMessage);
-                });
-            })
+            )
             .finally(function () {
                 listener();
             });
